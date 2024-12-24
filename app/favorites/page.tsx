@@ -9,27 +9,34 @@ interface Favorite {
   imageUrl: string;
 }
 
-export default function FavoritesPage() {
+export default function FavoritesPage(): JSX.Element {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [message, setMessage] = useState<string>("");
 
-  // Fetch favorites from the database
+  // Ensure async code in useEffect has a return type of Promise<void>
   useEffect(() => {
-    fetch("/api/favorites")
-      .then((res) => res.json())
-      .then((data) => setFavorites(data));
+    const fetchFavorites = async (): Promise<void> => {
+      try {
+        const res = await fetch("/api/favorites");
+        const data = await res.json();
+        setFavorites(data);
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+    };
+
+    fetchFavorites();
   }, []);
 
-  // Function to remove a recipe from favorites
-  const removeFromFavorites = async (recipeId: string) => {
+  const removeFromFavorites = async (recipeId: string): Promise<void> => {
     try {
       await axios.delete("/api/favorites", {
         data: { recipeId },
       });
       setFavorites(favorites.filter((fav) => fav.recipeId !== recipeId));
       setMessage("Recipe removed from favorites!");
-      setTimeout(() => setMessage(""), 3000); // Hide the message after 3 seconds
-    } catch (error) {
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error: any) {
       setMessage("Failed to remove recipe from favorites.");
       setTimeout(() => setMessage(""), 3000);
     }

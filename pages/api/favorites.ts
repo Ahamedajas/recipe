@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '@/lib/mongodb';
+import FavoriteRecipe from '@/models/FavoriteRecipe';  // Ensure model is imported
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const client = await clientPromise;
@@ -10,6 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const { recipeId, recipeName, imageUrl } = req.body;
 
+        // Insert recipe into the database
         const result = await db.collection('favorite_recipes').insertOne({
           recipeId,
           recipeName,
@@ -18,6 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(201).json({ message: 'Recipe added to favorites!' });
       } catch (error) {
+        console.error('Error adding to favorites:', error);
         res.status(500).json({ error: 'Failed to add recipe to favorites.' });
       }
       break;
@@ -31,6 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200).json(favorites);
       } catch (error) {
+        console.error('Error fetching favorites:', error);
         res.status(500).json({ error: 'Failed to fetch favorites.' });
       }
       break;
@@ -39,21 +43,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const { recipeId } = req.body;
 
+        // Delete recipe from favorites
         const result = await db
           .collection('favorite_recipes')
           .deleteOne({ recipeId });
 
         if (result.deletedCount === 0) {
-          res.status(404).json({ error: 'Recipe not found in favorites.' });
-        } else {
-          res.status(200).json({ message: 'Recipe removed from favorites!' });
+          return res.status(404).json({ error: 'Recipe not found in favorites.' });
         }
+
+        res.status(200).json({ message: 'Recipe removed from favorites!' });
       } catch (error) {
+        console.error('Error removing from favorites:', error);
         res.status(500).json({ error: 'Failed to remove recipe from favorites.' });
       }
       break;
 
     default:
+      // Handle unsupported HTTP methods
       res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
   }

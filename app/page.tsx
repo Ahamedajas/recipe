@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon, BookmarkIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link'; // Add this import
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -13,11 +13,11 @@ export default function HomePage() {
           Explore a wide variety of recipes, save your favorites, and cook your favorite dishes with ease.
         </p>
 
-        {/* Call to Action */}
         <div className="space-x-6 mb-10">
           <Link 
             href="/recipe"
             className="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-xl text-lg font-semibold transition duration-300 transform hover:scale-105"
+            aria-label="Explore Recipes"
           >
             Explore Recipes
           </Link>
@@ -25,12 +25,12 @@ export default function HomePage() {
           <Link 
             href="/favorites"
             className="bg-white text-blue-900 hover:bg-blue-100 px-8 py-4 rounded-xl text-lg font-semibold transition duration-300 transform hover:scale-105"
+            aria-label="View Favorite Recipes"
           >
             View Favorites
           </Link>
         </div>
 
-        {/* Section with Engaging Content */}
         <section className="bg-white text-blue-900 p-10 rounded-lg shadow-lg my-10">
           <h2 className="text-3xl font-bold mb-4 text-center">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -54,7 +54,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Additional Section with Fun Facts or Features */}
         <section className="bg-blue-600 text-white p-10 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold mb-6 text-center">A Platform for Every Food Lover</h2>
           <p className="text-lg text-center">

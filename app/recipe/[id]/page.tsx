@@ -15,6 +15,12 @@ interface Recipe {
   strIngredient3: string;
   strIngredient4: string;
   strIngredient5: string;
+  // Add more ingredients as needed
+  strMeasure1?: string;
+  strMeasure2?: string;
+  strMeasure3?: string;
+  strMeasure4?: string;
+  strMeasure5?: string;
 }
 
 export default function RecipeDetail() {
@@ -45,20 +51,18 @@ export default function RecipeDetail() {
 
   const handleFavorite = async () => {
     if (isFavorite) {
-      // Remove from favorites
       try {
         await axios.delete(`/api/favorites`, {
           data: { recipeId: recipe?.idMeal },
         });
         setIsFavorite(false);
         setMessage("Removed from favorites!");
-        setTimeout(() => setMessage(""), 3000); // Hide the message after 3 seconds
+        setTimeout(() => setMessage(""), 3000); 
       } catch (error) {
         setMessage("Failed to remove from favorites.");
         setTimeout(() => setMessage(""), 3000);
       }
     } else {
-      // Add to favorites
       try {
         await axios.post("/api/favorites", {
           recipeId: recipe?.idMeal,
@@ -67,7 +71,7 @@ export default function RecipeDetail() {
         });
         setIsFavorite(true);
         setMessage(`${recipe?.strMeal} has been added to favorites!`);
-        setTimeout(() => setMessage(""), 3000); // Hide the message after 3 seconds
+        setTimeout(() => setMessage(""), 3000); 
       } catch (error) {
         setMessage("Failed to add recipe to favorites.");
         setTimeout(() => setMessage(""), 3000);
@@ -97,11 +101,17 @@ export default function RecipeDetail() {
           <ul className="list-disc pl-6">
             {Object.keys(recipe)
               .filter((key) => key.startsWith("strIngredient") && recipe[key as keyof Recipe])
-              .map((key, index) => (
-                <li key={index} className="text-lg text-gray-400">
-                  {recipe[key as keyof Recipe]} - {recipe[`strMeasure${index + 1}` as keyof Recipe]}
-                </li>
-              ))}
+              .map((key, index) => {
+                const measureKey = `strMeasure${index + 1}` as keyof Recipe;
+                const ingredient = recipe[key as keyof Recipe] || "";
+                const measure = recipe[measureKey] || "";
+
+                return (
+                  <li key={index} className="text-lg text-gray-400">
+                    {ingredient} {measure && `- ${measure}`}
+                  </li>
+                );
+              })}
           </ul>
         </div>
         <button
