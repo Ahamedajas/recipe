@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { JSX } from "react/jsx-runtime";
 
 interface Favorite {
   recipeId: string;
@@ -10,18 +11,19 @@ interface Favorite {
   imageUrl: string;
 }
 
-export default function FavoritesPage(): JSX.Element {  // Updated return type here
+export default function FavoritesPage(): JSX.Element {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [message, setMessage] = useState<string>("");
 
+  // Ensure async code in useEffect has a return type of Promise<void>
   useEffect(() => {
     const fetchFavorites = async (): Promise<void> => {
       try {
         const res = await fetch("/api/favorites");
         const data: Favorite[] = await res.json();
         setFavorites(data);
-      } catch (error) {
-        console.error("Error fetching favorites:", error);
+      } catch {
+        console.error("Error fetching favorites");
       }
     };
 
@@ -36,7 +38,7 @@ export default function FavoritesPage(): JSX.Element {  // Updated return type h
       setFavorites(favorites.filter((fav) => fav.recipeId !== recipeId));
       setMessage("Recipe removed from favorites!");
       setTimeout(() => setMessage(""), 3000);
-    } catch (error) {
+    } catch {
       setMessage("Failed to remove recipe from favorites.");
       setTimeout(() => setMessage(""), 3000);
     }
@@ -55,14 +57,11 @@ export default function FavoritesPage(): JSX.Element {  // Updated return type h
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {favorites.length > 0 ? (
           favorites.map((fav) => (
-            <div
-              key={fav.recipeId}
-              className="border p-6 rounded-lg shadow-lg"
-            >
+            <div key={fav.recipeId} className="border p-6 rounded-lg shadow-lg">
               <Image
                 src={fav.imageUrl}
                 alt={fav.recipeName}
-                width={500}  // Specify width for optimization
+                width={500} // Specify width for optimization
                 height={300} // Specify height for optimization
                 className="w-full h-48 object-cover rounded-lg"
               />
