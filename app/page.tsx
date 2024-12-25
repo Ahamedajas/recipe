@@ -59,7 +59,7 @@ export default function HomePage() {
         <section className="bg-blue-600 text-white p-10 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold mb-6 text-center">A Platform for Every Food Lover</h2>
           <p className="text-lg text-center">
-            Whether you're a beginner or an experienced cook, our platform offers a wide range of recipes to suit your taste.
+            Whether you&apos;re a beginner or an experienced cook, our platform offers a wide range of recipes to suit your taste.
           </p>
         </section>
       </div>
