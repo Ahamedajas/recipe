@@ -21,8 +21,8 @@ export default function FavoritesPage(): JSX.Element {
         const res = await fetch("/api/favorites");
         const data: Favorite[] = await res.json(); // Correct type here
         setFavorites(data);
-      } catch (error) {
-        console.error("Error fetching favorites:", error);
+      } catch {
+        console.error("Error fetching favorites:");
       }
     };
 
@@ -37,7 +37,7 @@ export default function FavoritesPage(): JSX.Element {
       setFavorites(favorites.filter((fav) => fav.recipeId !== recipeId));
       setMessage("Recipe removed from favorites!");
       setTimeout(() => setMessage(""), 3000);
-    } catch (error) {
+    } catch {
       setMessage("Failed to remove recipe from favorites.");
       setTimeout(() => setMessage(""), 3000);
     }

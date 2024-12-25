@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '@/lib/mongodb';
-import FavoriteRecipe from '@/models/FavoriteRecipe';  // Ensure model is imported
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const client = await clientPromise;

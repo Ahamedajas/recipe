@@ -37,7 +37,7 @@ export default function RecipePage() {
         recipeName: recipe.strMeal,
         imageUrl: recipe.strMealThumb,
       });
-      setMessage(`${recipe.strMeal} has been added to favorites!`);
+      setMessage(`${recipe.strMeal} has been added to favorites&#39;!`);
       setTimeout(() => setMessage(""), 3000);
     } catch {
       setMessage("Failed to add recipe to favorites.");
