@@ -10,13 +10,11 @@ if (!uri) {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  // Use @ts-expect-error instead of @ts-ignore
-  // @ts-expect-error: Suppressing error because the global object in TypeScript doesn't have the _mongoClientPromise property, but it works at runtime.
-  if (!(globalThis as { _mongoClientPromise?: Promise<MongoClient> })._mongoClientPromise) {
+  if (!(globalThis as any)._mongoClientPromise) {
     client = new MongoClient(uri);
-    (globalThis as { _mongoClientPromise: Promise<MongoClient> })._mongoClientPromise = client.connect();
+    (globalThis as any)._mongoClientPromise = client.connect();
   }
-  clientPromise = (globalThis as { _mongoClientPromise: Promise<MongoClient> })._mongoClientPromise;
+  clientPromise = (globalThis as any)._mongoClientPromise;
 } else {
   client = new MongoClient(uri);
   clientPromise = client.connect();
