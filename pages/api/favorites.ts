@@ -10,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const { recipeId, recipeName, imageUrl } = req.body;
 
-        // Insert recipe into the database
         await db.collection('favorite_recipes').insertOne({
           recipeId,
           recipeName,
@@ -42,7 +41,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const { recipeId } = req.body;
 
-        // Delete recipe from favorites
         const deletionResult = await db
           .collection('favorite_recipes')
           .deleteOne({ recipeId });
@@ -59,7 +57,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       break;
 
     default:
-      // Handle unsupported HTTP methods
       res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
   }
