@@ -10,19 +10,18 @@ interface Favorite {
   imageUrl: string;
 }
 
-export default function FavoritesPage(): JSX.Element {
+export default function FavoritesPage(): JSX.Element {  // Updated return type here
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [message, setMessage] = useState<string>("");
 
-  // Ensure async code in useEffect has a return type of Promise<void>
   useEffect(() => {
     const fetchFavorites = async (): Promise<void> => {
       try {
         const res = await fetch("/api/favorites");
-        const data: Favorite[] = await res.json(); // Correct type here
+        const data: Favorite[] = await res.json();
         setFavorites(data);
-      } catch {
-        console.error("Error fetching favorites:");
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
       }
     };
 
@@ -37,7 +36,7 @@ export default function FavoritesPage(): JSX.Element {
       setFavorites(favorites.filter((fav) => fav.recipeId !== recipeId));
       setMessage("Recipe removed from favorites!");
       setTimeout(() => setMessage(""), 3000);
-    } catch {
+    } catch (error) {
       setMessage("Failed to remove recipe from favorites.");
       setTimeout(() => setMessage(""), 3000);
     }
