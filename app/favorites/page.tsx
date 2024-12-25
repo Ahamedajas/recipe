@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 interface Favorite {
   recipeId: string;
@@ -18,7 +19,7 @@ export default function FavoritesPage(): JSX.Element {
     const fetchFavorites = async (): Promise<void> => {
       try {
         const res = await fetch("/api/favorites");
-        const data = await res.json();
+        const data: Favorite[] = await res.json(); // Correct type here
         setFavorites(data);
       } catch (error) {
         console.error("Error fetching favorites:", error);
@@ -36,7 +37,7 @@ export default function FavoritesPage(): JSX.Element {
       setFavorites(favorites.filter((fav) => fav.recipeId !== recipeId));
       setMessage("Recipe removed from favorites!");
       setTimeout(() => setMessage(""), 3000);
-    } catch (error: any) {
+    } catch (error) {
       setMessage("Failed to remove recipe from favorites.");
       setTimeout(() => setMessage(""), 3000);
     }
@@ -59,9 +60,11 @@ export default function FavoritesPage(): JSX.Element {
               key={fav.recipeId}
               className="border p-6 rounded-lg shadow-lg"
             >
-              <img
+              <Image
                 src={fav.imageUrl}
                 alt={fav.recipeName}
+                width={500}  // Specify width for optimization
+                height={300} // Specify height for optimization
                 className="w-full h-48 object-cover rounded-lg"
               />
               <h2 className="text-3xl mt-4">{fav.recipeName}</h2>

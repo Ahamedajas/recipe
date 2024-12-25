@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { recipeId, recipeName, imageUrl } = req.body;
 
         // Insert recipe into the database
-        const result = await db.collection('favorite_recipes').insertOne({
+        await db.collection('favorite_recipes').insertOne({
           recipeId,
           recipeName,
           imageUrl,
@@ -44,11 +44,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { recipeId } = req.body;
 
         // Delete recipe from favorites
-        const result = await db
+        const deletionResult = await db
           .collection('favorite_recipes')
           .deleteOne({ recipeId });
 
-        if (result.deletedCount === 0) {
+        if (deletionResult.deletedCount === 0) {
           return res.status(404).json({ error: 'Recipe not found in favorites.' });
         }
 

@@ -10,7 +10,8 @@ if (!uri) {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  // @ts-ignore: Access globalThis for sharing the MongoClient instance in dev mode
+  // Use @ts-expect-error instead of @ts-ignore
+  // @ts-expect-error
   if (!(globalThis as any)._mongoClientPromise) {
     client = new MongoClient(uri);
     (globalThis as any)._mongoClientPromise = client.connect();

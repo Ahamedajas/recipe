@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { StarIcon } from "@heroicons/react/24/solid";
+import Image from "next/image"; // Import Image from next/image for optimization
 
 interface Recipe {
   idMeal: string;
@@ -22,8 +23,8 @@ export default function RecipePage() {
       .then((data) => {
         setRecipes(data.meals || []);
       })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
+      .catch(() => {
+        console.error("Error fetching data.");
         setMessage("Failed to load recipes.");
         setTimeout(() => setMessage(""), 3000);
       });
@@ -37,8 +38,8 @@ export default function RecipePage() {
         imageUrl: recipe.strMealThumb,
       });
       setMessage(`${recipe.strMeal} has been added to favorites!`);
-      setTimeout(() => setMessage(""), 3000); 
-    } catch (error) {
+      setTimeout(() => setMessage(""), 3000);
+    } catch {
       setMessage("Failed to add recipe to favorites.");
       setTimeout(() => setMessage(""), 3000);
     }
@@ -55,9 +56,12 @@ export default function RecipePage() {
               className="border border-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-900 transition"
             >
               <Link href={`/recipe/${recipe.idMeal}`}>
-                <img
+                {/* Replaced img with Image for optimization */}
+                <Image
                   src={recipe.strMealThumb}
                   alt={recipe.strMeal}
+                  width={500}  // Specify width for optimization
+                  height={350} // Specify height for optimization
                   className="w-full h-48 object-cover rounded-lg"
                 />
               </Link>
