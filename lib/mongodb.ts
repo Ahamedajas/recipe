@@ -10,11 +10,12 @@ if (!uri) {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  if (!(globalThis as any)._mongoClientPromise) {
+  // Cast globalThis to unknown first, then to the correct type
+  if (!(globalThis as unknown as { _mongoClientPromise?: Promise<MongoClient> })._mongoClientPromise) {
     client = new MongoClient(uri);
-    (globalThis as any)._mongoClientPromise = client.connect();
+    (globalThis as unknown as { _mongoClientPromise: Promise<MongoClient> })._mongoClientPromise = client.connect();
   }
-  clientPromise = (globalThis as any)._mongoClientPromise;
+  clientPromise = (globalThis as unknown as { _mongoClientPromise: Promise<MongoClient> })._mongoClientPromise;
 } else {
   client = new MongoClient(uri);
   clientPromise = client.connect();

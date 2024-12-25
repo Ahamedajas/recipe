@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { StarIcon } from "@heroicons/react/24/solid";
+import Image from "next/image"; // Import Image from next/image for optimization
 
 // Define the Favorite interface
 interface Favorite {
@@ -83,15 +84,21 @@ export default function RecipeDetail() {
     <main className="min-h-screen p-10 bg-gray-900 text-white">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-5xl font-bold mb-8 text-center">{recipe.strMeal}</h1>
-        <img
+        
+        {/* Replacing img with Image for optimization */}
+        <Image
           src={recipe.strMealThumb}
           alt={recipe.strMeal}
+          width={500}  // Set a width
+          height={350} // Set a height
           className="w-full h-[350px] object-cover rounded-lg mb-8 shadow-md"
         />
+        
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
           <h2 className="text-3xl font-semibold mb-4">Instructions</h2>
           <p className="leading-relaxed text-lg">{recipe.strInstructions}</p>
         </div>
+        
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg mt-8">
           <h2 className="text-3xl font-semibold mb-4">Ingredients</h2>
           <ul className="list-disc pl-6">
@@ -110,6 +117,7 @@ export default function RecipeDetail() {
               })}
           </ul>
         </div>
+        
         <button
           onClick={handleFavorite}
           className="mt-4 p-4 bg-yellow-500 rounded-full hover:bg-yellow-600 transition"
